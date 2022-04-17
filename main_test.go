@@ -42,3 +42,17 @@ func TestNewCompanyHandler(t *testing.T) {
 	r.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusCreated, w.Code)
 }
+
+func TestGetCompaniesHandler(t *testing.T) {
+	r := SetUpRouter()
+	r.GET("/companies", GetCompaniesHandler)
+	req, _ := http.NewRequest("GET", "/companies", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	var companies []Company
+	json.Unmarshal(w.Body.Bytes(), &companies)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.NotEmpty(t, companies)
+}
