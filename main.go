@@ -13,6 +13,10 @@ func HomepageHandler(c *gin.Context) {
 func main() {
 	router := gin.Default()
 	router.GET("/", HomepageHandler)
+	router.GET("/companies", GetCompaniesHandler)
+	router.POST("/company", NewCompanyHandler)
+	router.PUT("/company/:id", UpdateCompanyHandler)
+	router.DELETE("/company/:id", DeleteCompanyHandler)
 	router.Run()
 }
 
