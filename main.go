@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/rs/xid"
 	"net/http"
 )
 
@@ -27,3 +28,17 @@ var companies = []Company{
 	{ID: "2", Name: "Netflix", CEO: "Reed Hastings", Revenue: "20.2 billion"},
 	{ID: "3", Name: "Microsoft", CEO: "Satya Nadella", Revenue: "320 million"},
 }
+
+func NewCompanyHandler(c *gin.Context) {
+	var newCompany Company
+	if err := c.ShouldBindJSON(&newCompany); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	newCompany.ID = xid.New().String()
+	companies = append(companies, newCompany)
+	c.JSON(http.StatusCreated, newCompany)
+}
+
