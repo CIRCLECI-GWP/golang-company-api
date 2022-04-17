@@ -56,3 +56,24 @@ func TestGetCompaniesHandler(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.NotEmpty(t, companies)
 }
+
+func TestUpdateCompanyHandler(t *testing.T) {
+	r := SetUpRouter()
+	r.PUT("/company/:id", UpdateCompanyHandler)
+	company := Company{
+		ID:      `2`,
+		Name:    "Demo Company",
+		CEO:     "Demo CEO",
+		Revenue: "35 million",
+	}
+	jsonValue, _ := json.Marshal(company)
+	reqFound, _ := http.NewRequest("PUT", "/company/"+company.ID, bytes.NewBuffer(jsonValue))
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, reqFound)
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	reqNotFound, _ := http.NewRequest("PUT", "/company/12", bytes.NewBuffer(jsonValue))
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, reqNotFound)
+	assert.Equal(t, http.StatusNotFound, w.Code)
+}
