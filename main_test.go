@@ -24,3 +24,21 @@ func TestHomepageHandler(t *testing.T) {
 	assert.Equal(t, mockResponse, string(responseData))
 	assert.Equal(t, http.StatusOK, w.Code)
 }
+
+func TestNewCompanyHandler(t *testing.T) {
+	r := SetUpRouter()
+	r.POST("/company", NewCompanyHandler)
+	companyId := xid.New().String()
+	company := Company{
+		ID:      companyId,
+		Name:    "Demo Company",
+		CEO:     "Demo CEO",
+		Revenue: "35 million",
+	}
+	jsonValue, _ := json.Marshal(company)
+	req, _ := http.NewRequest("POST", "/company", bytes.NewBuffer(jsonValue))
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusCreated, w.Code)
+}
