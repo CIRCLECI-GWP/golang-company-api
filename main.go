@@ -42,3 +42,6 @@ func NewCompanyHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, newCompany)
 }
 
+func GetCompaniesHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, companies)
+}
