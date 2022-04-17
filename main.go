@@ -70,3 +70,23 @@ func UpdateCompanyHandler(c *gin.Context) {
 	companies[index] = company
 	c.JSON(http.StatusOK, company)
 }
+
+func DeleteCompanyHandler(c *gin.Context) {
+	id := c.Param("id")
+	index := -1
+	for i := 0; i < len(companies); i++ {
+		if companies[i].ID == id {
+			index = 1
+		}
+	}
+	if index == -1 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Company not found",
+		})
+		return
+	}
+	companies = append(companies[:index], companies[index+1:]...)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Company has been deleted",
+	})
+}
