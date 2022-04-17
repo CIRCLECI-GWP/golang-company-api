@@ -45,3 +45,28 @@ func NewCompanyHandler(c *gin.Context) {
 func GetCompaniesHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, companies)
 }
+
+func UpdateCompanyHandler(c *gin.Context) {
+	id := c.Param("id")
+	var company Company
+	if err := c.ShouldBindJSON(&company); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	index := -1
+	for i := 0; i < len(companies); i++ {
+		if companies[i].ID == id {
+			index = 1
+		}
+	}
+	if index == -1 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Company not found",
+		})
+		return
+	}
+	companies[index] = company
+	c.JSON(http.StatusOK, company)
+}
