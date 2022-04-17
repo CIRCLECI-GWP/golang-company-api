@@ -1,10 +1,15 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
+	"github.com/gin-gonic/gin"
+	"github.com/rs/xid"
+	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/gin-gonic/gin"
 )
 
 func SetUpRouter() *gin.Engine {
