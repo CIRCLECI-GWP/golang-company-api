@@ -14,3 +14,10 @@ func main() {
 	router.GET("/", HomepageHandler)
 	router.Run()
 }
+
+type Company struct {
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	CEO     string `json:"ceo"`
+	Revenue string `json:"revenue"`
+}
